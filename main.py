@@ -19,24 +19,6 @@ def check_name(name):
         return ls
 
 
-def main():
-    # pprint(contacts_list)
-
-    print(contacts_list[1])
-
-    # TODO 1: выполните пункты 1-3 ДЗ
-    # ваш код
-
-    # print (re.split("\s", contacts_list[1]))
-
-    # # TODO 2: сохраните получившиеся данные в другой файл
-    # # код для записи файла в формате CSV
-    # with open("phonebook.csv", "w") as f:
-    #   datawriter = csv.writer(f, delimiter=',')
-    #   # Вместо contacts_list подставьте свой список
-    #   datawriter.writerows(contacts_list)
-
-
 def init_phonebook():
     # lastname, firstname, surname, organization, position, phone, email
     with open("phonebook.csv", "w") as f:
@@ -51,30 +33,35 @@ def add_phonebook(d):
 
 if __name__ == '__main__':
     contacts_list = read_csv("phonebook_raw.csv")
-    init_phonebook()
-    dl = []
+    d = {
+        'lastname':'',
+        'firstname':'',
+        'surname':'',
+        'organization':'',
+        'position':'',
+        'phone':'',
+        'email':''
+    }
+    pattern = r'[А-Яа-яЁё]+'
     for i in range(1, len(contacts_list)):
-        d = []
-        line = contacts_list[i][0:3]
-        n = []
-        for i in range(0, 3):
-            if len(line[i]) < 5:
-                break
-            n.extend(line[i].split(' '))
+        words = contacts_list[i][:3]
+        res = re.findall(pattern, str(words))
+        res.extend(contacts_list[i][3:])
 
-        first_name = n[0]
-        second_name = n[1]
-        if len(n) < 3:
-            surname = ''
-        else:
-            surname = n[2]
+        print(res)
 
-        name = [first_name, second_name, surname]
-        d.extend(name)
-        d.extend(contacts_list[i][3:])
-        n = re.sub(r'(\d)(\d{3})(\d{3})(\d{2})(\d{2})', r'\1 (\2) \3-\4-\5', d[5])
-        d.insert(5, n)
-        d.remove(d[6])
-        dl.append(d)
+        # first_name = n[0]
+        # second_name = n[1]
+        # if len(n) < 3:
+        #     surname = ''
+        # else:
+        #     surname = n[2]
+        # name = [first_name, second_name, surname]
+        # d.extend(name)
+        # d.extend(contacts_list[i][3:])
+        # print(d)
+        # x = re.sub(r'(\d)(\d{3})(\d{3})(\d{2})(\d{2})', r'\1 (\2) \3-\4-\5', d[5])
+        # d.insert(5, x)
+        # d.remove(d[6])
+        # dl.append(d)
 
-    add_phonebook(dl)
