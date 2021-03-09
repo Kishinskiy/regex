@@ -7,8 +7,7 @@ import csv
 def read_csv(file_path):
     with open(file_path) as f:
         rows = csv.reader(f, delimiter=",")
-        contacts_list = list(rows)
-        return contacts_list
+        return list(rows)
 
 
 def init_phonebook():
@@ -17,10 +16,10 @@ def init_phonebook():
         f.write('lastname,firstname,surname,organization,position,phone,email\n')
 
 
-def add_phonebook(d):
+def add_phonebook(string):
     with open("phonebook.csv", "a") as f:
-        datawriter = csv.writer(f, delimiter=',')
-        datawriter.writerows(d)
+        contacts = csv.writer(f, delimiter=',')
+        contacts.writerows(string)
 
 
 def clean_phone(phone):
@@ -43,18 +42,18 @@ def clean_phone(phone):
     return ''
 
 
+def clean_name(name):
+    pattern = r'[А-Яа-яЁё]+'
+    res = re.findall(pattern, str(name))
+    return res[:3]
+
+
 if __name__ == '__main__':
     contacts_list = read_csv("phonebook_raw.csv")
-    # pprint(contacts_list)
-    # pattern = r'[А-Яа-яЁё]+'
-    # for i in range(1, len(contacts_list)):
-    #     words = contacts_list[i][:3]
-    #     res = re.findall(pattern, str(words))
-    #     res.extend(contacts_list[i][3:])
-    #     print(111, re.sub(r'(\+\d)(\d{3})(\d{3})(\d{2})(\d{2})', r'\1 (\2) \3-\4-\5', res[5]))
 
     for contact in contacts_list[1:]:
+        contact[:3] = clean_name(contact[:3])
         contact[-2] = clean_phone(contact[-2])
-        print(contact[-2])
+
 
     pprint(contacts_list)
