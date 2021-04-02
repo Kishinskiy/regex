@@ -50,10 +50,8 @@ def clean_name(name):
 
 if __name__ == '__main__':
     contacts_list = read_csv("phonebook_raw.csv")
-
+    db = {'name':''}
     for contact in contacts_list[1:]:
         contact[:3] = clean_name(contact[:3])
         contact[-2] = clean_phone(contact[-2])
-
-
-    pprint(contacts_list)
+        pprint(contact)
